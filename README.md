@@ -55,12 +55,10 @@ Then, you can use the plugin on any element that you want to animate when the us
 
 Finally, you need to call the **'scrollAnimate'** function on the elements that you want to animate.
 
-```javascript
-$('.element').scrollAnimate();
-```
-
 **OPTIONAL:** To run a function on element show and element hide
+
 ```javascript
+// Add before initializing, so it will be triggered even if the item already appears on the init.
 $('.element').on('scrollAnimate:onShow', function (event, element){
     console.log('onShow: ' + $(element).attr('id') );
 });
@@ -68,6 +66,10 @@ $('.element').on('scrollAnimate:onShow', function (event, element){
 $('.element').on('scrollAnimate:onHide', function (event, element){
     console.log('onHide: ' + $(element).attr('id') );
 });
+```
+
+```javascript
+$('.element').scrollAnimate();
 ```
 
 ## Animation Types
