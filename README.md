@@ -22,13 +22,13 @@ Then, you can use the plugin on any element that you want to animate when the us
 
 ## Example
 
-- **'HTML'**
+- **HTML**
 ```html
 <div class="element" id="first" data-show="200" data-hide="400" data-animation="fade">...</div>
 <div class="element" id="second" data-show="1000" data-hide="2500" data-amination="slide">...</div>
 ```
 
-- **'CSS'**
+- **CSS**
 ```css
 .element {
     background-color: #000;
@@ -51,7 +51,7 @@ Then, you can use the plugin on any element that you want to animate when the us
 }
 ```
 
-- **'JavaScript'**
+- **JavaScript**
 
 Finally, you need to call the **'scrollAnimate'** function on the elements that you want to animate.
 
