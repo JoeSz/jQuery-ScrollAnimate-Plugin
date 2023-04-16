@@ -59,6 +59,17 @@ Finally, you need to call the **'scrollAnimate'** function on the elements that 
 $('.element').scrollAnimate();
 ```
 
+**OPTIONAL:** To run a function on element show and element hide
+```javascript
+$('.element').on('scrollAnimate:onShow', function (event, element){
+    console.log('onShow: ' + $(element).attr('id') );
+});
+
+$('.element').on('scrollAnimate:onHide', function (event, element){
+    console.log('onHide: ' + $(element).attr('id') );
+});
+```
+
 ## Animation Types
 
 - **'fade'** : The element fades in or out.
@@ -79,17 +90,6 @@ Destroys the plugin and unbinds all events.
 
 ```javascript
 $('.element').scrollAnimate('destroy');
-```
-
-### To run a function on element show and element hide
-```javascript
-$('.element').on('scrollAnimate:onShow', function (event, element){
-    console.log('onShow: ' + $(element).attr('id') );
-});
-
-$('.element').on('scrollAnimate:onHide', function (event, element){
-    console.log('onHide: ' + $(element).attr('id') );
-});
 ```
 
 ## Implementation
