@@ -9,6 +9,8 @@ To use the plugin, you need to include the jQuery library and the ScrollAnimate 
 
 ```html
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="jquery.scrollanimate.light.js"></script>
+<!-- or -->
 <script src="jquery.scrollanimate.js"></script>
 ```
 
@@ -18,14 +20,43 @@ Then, you can use the plugin on any element that you want to animate when the us
 - **'data-hide'** : the scroll position (in pixels) where the animation should end
 - **'data-animation'** : the type of animation to use (**'fade'**, **'slide'**, **'slide-left'**, or **'slide-right'**)
 
+## Example
+
+- **'HTML'**
 ```html
-<div class="animate" data-show="200" data-hide="400" data-animation="fade">...</div>
+<div class="element" id="first" data-show="200" data-hide="400" data-animation="fade">...</div>
+<div class="element" id="second" data-show="1000" data-hide="2500" data-amination="slide">...</div>
 ```
+
+- **'CSS'**
+```css
+.element {
+    background-color: #000;
+    color: #fff;
+    display: none;
+    float: left;
+    font-size: 2em;
+    font-weight: bold;
+    opacity: 0.5;
+    padding: 2% 0;
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    z-index: 9;
+}
+.element#second {
+    top: 300px;
+    right: 0;
+    width: 200px;
+}
+```
+
+- **'JavaScript'**
 
 Finally, you need to call the **'scrollAnimate'** function on the elements that you want to animate.
 
 ```javascript
-$('.animate').scrollAnimate();
+$('.element').scrollAnimate();
 ```
 
 ## Animation Types
@@ -34,6 +65,32 @@ $('.animate').scrollAnimate();
 - **'slide'** : The element slides up or down.
 - **'slide-left'** : The element slides in from the left or out to the left.
 - **'slide-right'** : The element slides in from the right or out to the right.
+
+<hr>
+
+## Additional functions for the full version
+jquery.scrollanimate.js
+
+### Methods
+
+**'destroy()'**
+
+Destroys the plugin and unbinds all events.
+
+```javascript
+$('.element').scrollAnimate('destroy');
+```
+
+### To run a function on element show and element hide
+```javascript
+$('.element').on('scrollAnimate:onShow', function (event, element){
+    console.log('onShow: ' + $(element).attr('id') );
+});
+
+$('.element').on('scrollAnimate:onHide', function (event, element){
+    console.log('onHide: ' + $(element).attr('id') );
+});
+```
 
 ## Implementation
 
