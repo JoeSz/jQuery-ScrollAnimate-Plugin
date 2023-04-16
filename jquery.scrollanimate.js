@@ -129,43 +129,45 @@
             var plugin = this;
 
             switch (animationType) {
-              case 'fade':
-                $element.fadeIn(plugin.settings.duration);
-                break;
-              case 'slide':
-                $element.slideDown(plugin.settings.duration);
-                break;
-              case 'slide-left':
-                $element.show('slide', { direction: 'left' }, plugin.settings.duration);
-                break;
-              case 'slide-right':
-                $element.show('slide', { direction: 'right' }, plugin.settings.duration);
-                break;
-              default:
-                $element.fadeIn(plugin.settings.duration);
+                case 'fade':
+                    $element.fadeIn(plugin.settings.duration);
+                    break;
+                case 'slide':
+                    $element.slideDown(plugin.settings.duration);
+                    break;
+                case 'slide-left':
+                    $element.show('slide', { direction: 'left' }, plugin.settings.duration);
+                    break;
+                case 'slide-right':
+                    $element.show('slide', { direction: 'right' }, plugin.settings.duration);
+                    break;
+                default:
+                    $element.fadeIn(plugin.settings.duration);
             }
-          },
 
-          _hideElement: function ($element, animationType) {
+        },
+
+        _hideElement: function ($element, animationType) {
             var plugin = this;
 
             switch (animationType) {
-              case 'fade':
-                $element.fadeOut(plugin.settings.duration);
-                break;
-              case 'slide':
-                $element.slideUp(plugin.settings.duration);
-                break;
-              case 'slide-left':
-                $element.hide('slide', { direction: 'left' }, plugin.settings.duration);
-                break;
-              case 'slide-right':
-                $element.hide('slide', { direction: 'right' }, plugin.settings.duration);
-                break;
-              default:
-                $element.fadeOut(plugin.settings.duration);
+                case 'fade':
+                    $element.fadeOut(plugin.settings.duration);
+                    break;
+                case 'slide':
+                    $element.slideUp(plugin.settings.duration);
+                    break;
+                case 'slide-left':
+                    $element.hide('slide', { direction: 'left' }, plugin.settings.duration);
+                    break;
+                case 'slide-right':
+                    $element.hide('slide', { direction: 'right' }, plugin.settings.duration);
+                    break;
+                default:
+                    $element.fadeOut(plugin.settings.duration);
             }
-          }
+
+        }
     });
 
     $.fn[pluginName] = function (options) {
