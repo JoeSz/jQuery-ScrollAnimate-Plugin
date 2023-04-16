@@ -8,8 +8,11 @@
  * Disclaimer
  * https://www.joeszalai.org/disclaimer/
  */
-;(function ($) {
+; (function ($, window, document, undefined) {
 
+    "use strict";
+
+    // from jQuery UI
     var effectsEffectSlide = $.effects.define("slide", "show", function (options, done) {
         var startClip, startRef,
             element = $(this),
@@ -54,77 +57,129 @@
         });
     });
 
-    // Throttle function from Underscore.js
-    function throttle(func, wait) {
-        var timeout;
-        return function () {
-            var context = this, args = arguments;
-            var later = function () {
-                timeout = null;
-                func.apply(context, args);
-            };
-            if (!timeout) {
-                timeout = setTimeout(later, wait);
-            }
-        };
+    var pluginName = "scrollAnimate";
+
+    function Plugin(element, options) {
+        this.element = element;
+        this.$element = $(element);
+        this.settings = $.extend({
+            show: parseInt(this.$element.data('show'), 10),
+            hide: parseInt(this.$element.data('hide'), 10),
+            animationType: this.$element.data('amination'),
+            throttle: 50,
+            duration: 300,
+            easing: "swing"
+        }, options);
+        this._name = pluginName;
+        this.init();
     }
 
-    $.fn.scrollAnimate = function () {
-        var elements = this;
-        var animations = [];
-
-        // Collect animations
-        elements.each(function () {
-            var $element = $(this);
-            var show = parseInt($element.data('show'), 10);
-            var hide = parseInt($element.data('hide'), 10);
-            var animationType = $element.data('amination');
-            var animation = {
-                $element: $element,
-                show: show,
-                hide: hide,
-                animationType: animationType
-            };
-            animations.push(animation);
-        });
-
-        // Animate on scroll
-        var animate = throttle(function () {
-            var scrollTop = $(window).scrollTop();
-            animations.forEach(function (animation) {
-                var $element = animation.$element;
-                var show = animation.show;
-                var hide = animation.hide;
-                var animationType = animation.animationType;
-
-                if (scrollTop >= show && scrollTop <= hide) {
-                    if (!$element.is(':visible')) {
-                        if (animationType === 'fade') {
-                            $element.fadeIn();
-                        } else if (animationType === 'slide') {
-                            $element.slideDown();
-                        } else if (animationType === 'slide-left') {
-                            $element.show('slide', { direction: 'left' }, 300);
-                        } else if (animationType === 'slide-right') {
-                            $element.show('slide', { direction: 'right' }, 300);
-                        }
-                    }
-                } else {
-                    if ($element.is(':visible')) {
-                        if (animationType === 'fade') {
-                            $element.fadeOut();
-                        } else if (animationType === 'slide') {
-                            $element.slideUp();
-                        } else if (animationType === 'slide-left') {
-                            $element.hide('slide', { direction: 'left' }, 300);
-                        } else if (animationType === 'slide-right') {
-                            $element.hide('slide', { direction: 'right' }, 300);
-                        }
-                    }
+    $.extend(Plugin.prototype, {
+        init: function () {
+            var plugin = this;
+            plugin.bindEvents();
+            plugin.check();
+        },
+        bindEvents: function () {
+            var plugin = this;
+            $(window).on('scroll' + '.' + plugin._name, plugin.throttle(plugin.settings.throttle, function () {
+                plugin.check();
+            }));
+        },
+        destroy: function () {
+            this.unbindEvents();
+            // this.$element.removeData();
+            this.$element.removeData("plugin_" + pluginName);
+        },
+        unbindEvents: function () {
+            this.$element.off('.' + this._name);
+            $(window).off('.' + this._name);
+        },
+        throttle: function (delay, callback) {
+            var timeout = null;
+            return function () {
+                var args = arguments;
+                var context = this;
+                if (!timeout) {
+                    timeout = setTimeout(function () {
+                        callback.apply(context, args);
+                        timeout = null;
+                    }, delay);
                 }
-            });
-        }, 50);
+            };
+        },
+        check: function () {
+            var plugin = this;
+            var scrollTop = $(window).scrollTop();
 
-        $(window).on('scroll', animate);
+            if (scrollTop >= plugin.settings.show && scrollTop <= plugin.settings.hide) {
+                if (!plugin.$element.is(':visible')) {
+                    plugin._showElement(plugin.$element, plugin.settings.animationType);
+                    plugin.$element.trigger(pluginName + ':onShow', plugin.$element);
+                }
+            } else {
+                if (plugin.$element.is(':visible')) {
+                    plugin._hideElement(plugin.$element, plugin.settings.animationType);
+                    plugin.$element.trigger(pluginName + ':onHide', plugin.$element);
+                }
+            }
+
+        },
+        _showElement: function ($element, animationType) {
+            var plugin = this;
+
+            switch (animationType) {
+              case 'fade':
+                $element.fadeIn(plugin.settings.duration);
+                break;
+              case 'slide':
+                $element.slideDown(plugin.settings.duration);
+                break;
+              case 'slide-left':
+                $element.show('slide', { direction: 'left' }, plugin.settings.duration);
+                break;
+              case 'slide-right':
+                $element.show('slide', { direction: 'right' }, plugin.settings.duration);
+                break;
+              default:
+                $element.fadeIn(plugin.settings.duration);
+            }
+          },
+
+          _hideElement: function ($element, animationType) {
+            var plugin = this;
+
+            switch (animationType) {
+              case 'fade':
+                $element.fadeOut(plugin.settings.duration);
+                break;
+              case 'slide':
+                $element.slideUp(plugin.settings.duration);
+                break;
+              case 'slide-left':
+                $element.hide('slide', { direction: 'left' }, plugin.settings.duration);
+                break;
+              case 'slide-right':
+                $element.hide('slide', { direction: 'right' }, plugin.settings.duration);
+                break;
+              default:
+                $element.fadeOut(plugin.settings.duration);
+            }
+          }
+    });
+
+    $.fn[pluginName] = function (options) {
+        var args = Array.prototype.slice.call(arguments, 1);
+
+        return this.each(function () {
+            var instance = $.data(this, "plugin_" + pluginName);
+
+            if (!instance) {
+                $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+            } else if (typeof options === 'string' && typeof instance[options] === 'function') {
+                instance[options].apply(instance, args);
+            }
+        });
     };
-})(jQuery);
+
+})(jQuery, window, document);
