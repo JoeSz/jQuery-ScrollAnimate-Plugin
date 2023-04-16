@@ -125,6 +125,6 @@
             });
         }, 50);
 
-        $(window).on('scroll', animate);
+        $(window).on('scroll.scrollAnimate resize.scrollAnimate', animate);
     };
 })(jQuery);
