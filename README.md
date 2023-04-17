@@ -15,8 +15,8 @@ To use the plugin, you need to include the jQuery library and the ScrollAnimate 
 
 Then, you can use the plugin on any element that you want to animate when the user scrolls down the page. You need to add some data attributes to the element:
 
-- **'data-show'** : the scroll position (in pixels) where the animation should start
-- **'data-hide'** : the scroll position (in pixels) where the animation should end
+- **'data-show'** : the scroll position (in pixels or percent of document) where the animation should start
+- **'data-hide'** : the scroll position (in pixels or percent of document) where the animation should end
 - **'data-animation'** : the type of animation to use (**'fade'**, **'slide'**, **'slide-left'**, or **'slide-right'**)
 
 ## Example
@@ -25,6 +25,7 @@ Then, you can use the plugin on any element that you want to animate when the us
 ```html
 <div class="element" id="first" data-show="200" data-hide="400" data-animation="fade">...</div>
 <div class="element" id="second" data-show="1000" data-hide="2500" data-amination="slide">...</div>
+<div class="element" id="third" data-show="50%" data-hide="60%" data-amination="slide">...</div>
 ```
 
 - **CSS**
@@ -45,6 +46,11 @@ Then, you can use the plugin on any element that you want to animate when the us
 }
 .element#second {
     top: 300px;
+    right: 0;
+    width: 200px;
+}
+.element#second {
+    top: 500px;
     right: 0;
     width: 200px;
 }
@@ -96,9 +102,6 @@ $('.element').scrollAnimate('destroy');
 ## Implementation
 
 The plugin uses the **'throttle'** function from the Underscore.js library to optimize performance. It collects all the animations into an array and applies them when the user scrolls down the page. When the element is visible, the plugin applies the appropriate animation using the **'fadeIn'**, **'slideDown'**, **'show'**, or **'hide'** functions from jQuery.
-
-## ToDos
-- percentage for in and out
 
 ## LICENSE DETAILS
 

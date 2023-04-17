@@ -63,14 +63,15 @@
         this.element = element;
         this.$element = $(element);
         this.settings = $.extend({
-            show: parseInt(this.$element.data('show'), 10),
-            hide: parseInt(this.$element.data('hide'), 10),
+            // show: parseInt(this.$element.data('show'), 10),
+            // hide: parseInt(this.$element.data('hide'), 10),
             animationType: this.$element.data('amination'),
             throttle: 50,
             duration: 300,
             easing: "swing"
         }, options);
         this._name = pluginName;
+        this.setShowHide();
         this.init();
     }
 
@@ -80,9 +81,34 @@
             plugin.bindEvents();
             plugin.check();
         },
+        setShowHide: function() {
+            var plugin = this;
+            var dataShow = this.$element.data('show') + "";
+            var dataHide = this.$element.data('hide') + "";
+            var dataShowInt = parseInt(dataShow, 10);
+            var dataHideInt = parseInt(dataHide, 10);
+            var documentHeightPerc = $(document).height() / 100;
+
+            if (dataShow.endsWith("%")) {
+                plugin.settings.show = documentHeightPerc * dataShowInt;
+            } else {
+                plugin.settings.show = dataShowInt;
+            }
+
+            if (dataHide.endsWith("%")) {
+                plugin.settings.hide = documentHeightPerc * dataHideInt;
+            } else {
+                plugin.settings.hide = dataHideInt;
+            }
+
+        },
         bindEvents: function () {
             var plugin = this;
-            $(window).on('scroll' + '.' + plugin._name + ' ' + 'resize' + '.' + plugin._name, plugin.throttle(plugin.settings.throttle, function () {
+            $(window).on('scroll' + '.' + plugin._name, plugin.throttle(plugin.settings.throttle, function () {
+                plugin.check();
+            }));
+            $(window).on('resize' + '.' + plugin._name, plugin.throttle(plugin.settings.throttle, function () {
+                plugin.setShowHide();
                 plugin.check();
             }));
         },
