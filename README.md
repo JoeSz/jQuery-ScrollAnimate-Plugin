@@ -97,6 +97,9 @@ $('.element').scrollAnimate('destroy');
 
 The plugin uses the **'throttle'** function from the Underscore.js library to optimize performance. It collects all the animations into an array and applies them when the user scrolls down the page. When the element is visible, the plugin applies the appropriate animation using the **'fadeIn'**, **'slideDown'**, **'show'**, or **'hide'** functions from jQuery.
 
+## ToDos
+- percentage for in and out
+
 ## LICENSE DETAILS
 
 The GPL license grants you the right to use, study, share (copy), modify and (re)distribute the software, as long as these license terms are retained.
