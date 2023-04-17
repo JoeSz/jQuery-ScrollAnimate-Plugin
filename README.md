@@ -91,7 +91,7 @@ jquery.scrollanimate.js
 
 ### Methods
 
-**'destroy()'**
+**'destroy'**
 
 Destroys the plugin and unbinds all events.
 
@@ -99,7 +99,10 @@ Destroys the plugin and unbinds all events.
 $('.element').scrollAnimate('destroy');
 ```
 
+**'setShowHide'**
+
 Recalulate show and height<br>
+<br>
 It is useful if elements were added dynamically after the plugin was initialized (so the height of the document changed), and percentages were used in data-show and/or data-hide elements.
 
 ```javascript
