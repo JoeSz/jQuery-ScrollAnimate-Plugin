@@ -99,6 +99,13 @@ Destroys the plugin and unbinds all events.
 $('.element').scrollAnimate('destroy');
 ```
 
+Recalulate show and height<br>
+It is useful if elements were added dynamically after the plugin was initialized (so the height of the document changed), and percentages were used in data-show and/or data-hide elements.
+
+```javascript
+$('.element').scrollAnimate('setShowHide');
+```
+
 ## Implementation
 
 The plugin uses the **'throttle'** function from the Underscore.js library to optimize performance. It collects all the animations into an array and applies them when the user scrolls down the page. When the element is visible, the plugin applies the appropriate animation using the **'fadeIn'**, **'slideDown'**, **'show'**, or **'hide'** functions from jQuery.
